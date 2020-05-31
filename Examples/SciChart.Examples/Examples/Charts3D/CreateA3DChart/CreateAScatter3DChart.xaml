@@ -22,6 +22,22 @@
 
             <ext:FlyoutSeparator Background="#444" />
 
+            <ext:FlyoutMenuButton Content="PLOT"
+                                  Padding="0"
+                                  Style="{StaticResource FlyoutMenuButtonStyle}">
+                <ext:FlyoutMenuButton.PopupContent>
+                    <StackPanel MinWidth="150" Orientation="Vertical">
+                        <TextBlock Text="Select scatter plot source" />
+                        <ext:FlyoutSeparator />
+
+                        <ComboBox x:Name="PlotSourceCombo"
+                                  SelectionChanged="PlotSourceCombo_OnSelectionChanged">
+                        </ComboBox>
+
+                    </StackPanel>
+                </ext:FlyoutMenuButton.PopupContent>
+            </ext:FlyoutMenuButton>
+
             <ext:FlyoutMenuButton Content="PM"
                                   Padding="0"
                                   Style="{StaticResource FlyoutMenuButtonStyle}">
@@ -33,7 +49,7 @@
                         <ComboBox x:Name="PointMarkerCombo"
                                   DisplayMemberPath="Name"
                                   SelectedIndex="0"
-                                   SelectionChanged="PointMarkerCombo_OnSelectionChanged">
+                                  SelectionChanged="PointMarkerCombo_OnSelectionChanged">
                         </ComboBox>
 
                     </StackPanel>
@@ -54,7 +70,7 @@
                                 Maximum="3.0"
                                 Minimum="0.1"
                                 Orientation="Horizontal"
-                                 ValueChanged="SizeSlider_OnValueChanged"
+                                ValueChanged="SizeSlider_OnValueChanged"
                                 Value="2.0" />
                     </StackPanel>
                 </ext:FlyoutMenuButton.PopupContent>
@@ -84,7 +100,7 @@
         <s3D:SciChart3DSurface x:Name="SciChart"
                                Grid.Column="1"
                                BorderThickness="0"
-                               WorldDimensions="200,100,200">
+                               WorldDimensions="200,200,200">
             <s3D:SciChart3DSurface.Camera>
                 <s3D:Camera3D ZoomToFitOnAttach="True" />
             </s3D:SciChart3DSurface.Camera>
@@ -108,7 +124,7 @@
             <s3D:SciChart3DSurface.ZAxis>
                 <s3D:NumericAxis3D GrowBy="0.1,0.1" />
             </s3D:SciChart3DSurface.ZAxis>
-
+            
         </s3D:SciChart3DSurface>
     </Grid>
 </UserControl>

@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net452;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp3.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <ApplicationIcon />
     <StartupObject />
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
     <OutputPath>..\..\Build\Debug</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
     <OutputPath>..\..\Build\Release</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.0|AnyCPU'">
@@ -1360,7 +1360,7 @@
     <Resource Include="Resources\Images\step_line.png" />
     <Resource Include="Resources\Images\type_button.png" />
   </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net452'">
+  <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SciChart" Version="6.2.0.13250-beta" />

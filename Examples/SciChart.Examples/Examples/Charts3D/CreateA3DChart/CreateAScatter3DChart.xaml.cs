@@ -15,18 +15,26 @@
 // *************************************************************************************
 
 using System;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using SciChart.Charting3D;
 using SciChart.Charting3D.Model;
 using SciChart.Charting3D.PointMarkers;
-using SciChart.Examples.ExternalDependencies.Data;
+using SciChart.Examples.Examples.Charts3D.Customize3DChart;
 
 namespace SciChart.Examples.Examples.Charts3D.CreateA3DChart
 {
     public partial class CreateAScatter3DChart : UserControl
     {
-        private const int Count = 1000;
+        Color customGreen = Color.FromRgb(149, 211, 165);
+        Color customYellow = Color.FromRgb(255, 192, 0);
+        Color customRed = Color.FromRgb(248, 105, 107);
+        Color customGray = Color.FromRgb(128, 128, 128);
+
+        TextSceneEntity currentTitle;
 
         public CreateAScatter3DChart()
         {
@@ -37,25 +45,79 @@ namespace SciChart.Examples.Examples.Charts3D.CreateA3DChart
             PointMarkerCombo.Items.Add(typeof(PyramidPointMarker3D));
             PointMarkerCombo.Items.Add(typeof(CylinderPointMarker3D));
 
+            PlotSourceCombo.ItemsSource = Directory.EnumerateFiles("..\\ScatterPlotSources").Where(s => s.EndsWith(".csv")).Select(s => Path.GetFileNameWithoutExtension(s));
+
             Loaded += OnLoaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            var xyzDataSeries3D = new XyzDataSeries3D<double>();
+            currentTitle = new TextSceneEntity("Select a source from the 'PLOT' side menu.", Color.FromRgb(255, 255, 255), new Vector3(0, 300, 0), TextDisplayMode.FacingCameraAlways, 12, "Segoe UI");
+            SciChart.Viewport3D.RootEntity.Children.Add(currentTitle);
 
-            for (var i = 0; i < Count; i++)
-            {
-                var x = DataManager.Instance.GetGaussianRandomNumber(5, 1.5);
-                var y = DataManager.Instance.GetGaussianRandomNumber(5, 1.5);
-                var z = DataManager.Instance.GetGaussianRandomNumber(5, 1.5);
-
-                xyzDataSeries3D.Append(x, y, z);
-            }
-
-            ScatterSeries3D.DataSeries = xyzDataSeries3D;
-
+            ScatterSeries3D.DataSeries = new XyzDataSeries3D<double>();
             PointMarkerCombo.SelectedIndex = 0;
+        }
+
+        private void PlotSourceCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedPlot = PlotSourceCombo.SelectedItem.ToString();
+            SciChart.Viewport3D.RootEntity.Children.Remove(currentTitle);
+            currentTitle = new TextSceneEntity(selectedPlot, Color.FromRgb(255, 255, 255), new Vector3(0, 300, 0), TextDisplayMode.FacingCameraAlways, 12, "Segoe UI");
+            SciChart.Viewport3D.RootEntity.Children.Add(currentTitle);
+
+            XyzDataSeries3D<double> newDataSeries = new XyzDataSeries3D<double>();
+            foreach (string line in File.ReadAllLines($"..\\ScatterPlotSources\\{selectedPlot}.csv"))
+            {
+                if (line.StartsWith("datasetName"))
+                {
+                    continue;
+                }
+                string[] fields = line.Split(',');
+                double knnallrew = double.Parse(fields[1]);
+                double nbpkid = double.Parse(fields[2]);
+                double dtc44 = double.Parse(fields[3]);
+                string category = fields[fields.Length - 1];
+                Color color;
+                if (selectedPlot.EndsWith("-truth"))
+                {
+                    switch (category)
+                    {
+                        case "C":
+                            color = customGreen;
+                            break;
+                        case "P":
+                            color = customYellow;
+                            break;
+                        case "I":
+                            color = customRed;
+                            break;
+                        default:
+                            color = customGray;
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (category)
+                    {
+                        case "m1Better":
+                            color = customRed;
+                            break;
+                        case "m2Better":
+                            color = customGreen;
+                            break;
+                        case "m3Better":
+                            color = customYellow;
+                            break;
+                        default:
+                            color = customGray;
+                            break;
+                    }
+                }
+                newDataSeries.Append(knnallrew, nbpkid, dtc44, new PointMetadata3D(color));
+            }
+            ScatterSeries3D.DataSeries = newDataSeries;
         }
 
         private void PointMarkerCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

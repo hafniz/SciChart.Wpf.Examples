@@ -1,19 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net452;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp3.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <ApplicationIcon />
     <StartupObject />
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
     <OutputPath>..\..\Build\Debug</OutputPath>
-    <DocumentationFile>..\..\Build\Debug\net452\SciChart.Examples.ExternalDependencies.xml</DocumentationFile>
+    <DocumentationFile>..\..\Build\Debug\net461\SciChart.Examples.ExternalDependencies.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
     <OutputPath>..\..\Build\Release\</OutputPath>
-    <DocumentationFile>..\..\Build\Release\net452\SciChart.Examples.ExternalDependencies.xml</DocumentationFile>
+    <DocumentationFile>..\..\Build\Release\net461\SciChart.Examples.ExternalDependencies.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.0|AnyCPU'">
     <OutputPath>..\..\Build\Debug</OutputPath>

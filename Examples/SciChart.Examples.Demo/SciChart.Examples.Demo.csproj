@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net452;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp3.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>SciChartDemoIcon32.ico</ApplicationIcon>
     <StartupObject />
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
     <OutputPath>..\..\Build\Debug</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
     <OutputPath>..\..\Build\Release\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
@@ -39,7 +39,7 @@
     <None Remove="Resources\Images\search.png" />
     <None Remove="Resources\stopwords.dat" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452'">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461'">
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
