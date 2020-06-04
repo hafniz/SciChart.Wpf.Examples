@@ -29,11 +29,6 @@ namespace SciChart.Examples.Examples.Charts3D.CreateA3DChart
 {
     public partial class CreateAScatter3DChart : UserControl
     {
-        Color customGreen = Color.FromRgb(149, 211, 165);
-        Color customYellow = Color.FromRgb(255, 192, 0);
-        Color customRed = Color.FromRgb(248, 105, 107);
-        Color customGray = Color.FromRgb(128, 128, 128);
-
         TextSceneEntity currentTitle;
 
         public CreateAScatter3DChart()
@@ -45,7 +40,7 @@ namespace SciChart.Examples.Examples.Charts3D.CreateA3DChart
             PointMarkerCombo.Items.Add(typeof(PyramidPointMarker3D));
             PointMarkerCombo.Items.Add(typeof(CylinderPointMarker3D));
 
-            PlotSourceCombo.ItemsSource = Directory.EnumerateFiles("..\\ScatterPlotSources").Where(s => s.EndsWith(".csv")).Select(s => Path.GetFileNameWithoutExtension(s));
+            PlotSourceCombo.ItemsSource = Directory.EnumerateFiles("..\\ScatterPlotSources").Where(s => s.ToUpper().EndsWith(".CSV")).Select(s => Path.GetFileNameWithoutExtension(s));
 
             Loaded += OnLoaded;
         }
@@ -66,8 +61,47 @@ namespace SciChart.Examples.Examples.Charts3D.CreateA3DChart
             currentTitle = new TextSceneEntity(selectedPlot, Color.FromRgb(255, 255, 255), new Vector3(0, 300, 0), TextDisplayMode.FacingCameraAlways, 12, "Segoe UI");
             SciChart.Viewport3D.RootEntity.Children.Add(currentTitle);
 
-            XyzDataSeries3D<double> newDataSeries = new XyzDataSeries3D<double>();
-            foreach (string line in File.ReadAllLines($"..\\ScatterPlotSources\\{selectedPlot}.csv"))
+            ScatterSeries3D.DataSeries = selectedPlot.ToUpper().EndsWith("-CUSTOMRGB") ? GetDataSeriesFromFileWithCustomRgb(selectedPlot) : GetDataSeriesFromFile(selectedPlot);
+        }
+
+        /// <summary>
+        /// Expected header: datasetName, x, y, z, ..., r, g, b
+        /// </summary>
+        private XyzDataSeries3D<double> GetDataSeriesFromFileWithCustomRgb(string basename)
+        {
+            XyzDataSeries3D<double> dataSeries = new XyzDataSeries3D<double>();
+            foreach (string line in File.ReadAllLines($"..\\ScatterPlotSources\\{basename}.csv"))
+            {
+                if (line.StartsWith("datasetName"))
+                {
+                    continue;
+                }
+                string[] fields = line.Split(',');
+                double knnallrew = double.Parse(fields[1]);
+                double nbpkid = double.Parse(fields[2]);
+                double dtc44 = double.Parse(fields[3]);
+                byte r = byte.Parse(fields[fields.Length - 3]);
+                byte g = byte.Parse(fields[fields.Length - 2]);
+                byte b = byte.Parse(fields[fields.Length - 1]);
+                Color color = Color.FromRgb(r, g, b);
+                dataSeries.Append(knnallrew, nbpkid, dtc44, new PointMetadata3D(color));
+            }
+
+            return dataSeries;
+        }
+
+        /// <summary>
+        /// Expected header: datasetName, x, y, z, ..., category
+        /// </summary>
+        private XyzDataSeries3D<double> GetDataSeriesFromFile(string basename)
+        {
+            Color customGreen = Color.FromRgb(149, 211, 165);
+            Color customYellow = Color.FromRgb(255, 192, 0);
+            Color customRed = Color.FromRgb(248, 105, 107);
+            Color customGray = Color.FromRgb(128, 128, 128);
+
+            XyzDataSeries3D<double> dataSeries = new XyzDataSeries3D<double>();
+            foreach (string line in File.ReadAllLines($"..\\ScatterPlotSources\\{basename}.csv"))
             {
                 if (line.StartsWith("datasetName"))
                 {
@@ -79,7 +113,7 @@ namespace SciChart.Examples.Examples.Charts3D.CreateA3DChart
                 double dtc44 = double.Parse(fields[3]);
                 string category = fields[fields.Length - 1];
                 Color color;
-                if (selectedPlot.EndsWith("-truth"))
+                if (basename.ToUpper().EndsWith("-TRUTH"))
                 {
                     switch (category)
                     {
@@ -115,9 +149,10 @@ namespace SciChart.Examples.Examples.Charts3D.CreateA3DChart
                             break;
                     }
                 }
-                newDataSeries.Append(knnallrew, nbpkid, dtc44, new PointMetadata3D(color));
+                dataSeries.Append(knnallrew, nbpkid, dtc44, new PointMetadata3D(color));
             }
-            ScatterSeries3D.DataSeries = newDataSeries;
+
+            return dataSeries;
         }
 
         private void PointMarkerCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
